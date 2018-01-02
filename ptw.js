@@ -73,19 +73,24 @@ function update_country_data(country, rating, result) {
 }
 
 function update_datamap() {
+    var labels = {};
+    for (var i = 0; i < map.worldTopo.objects.world.geometries.length; i++) {
+        console.log(map.worldTopo.objects.world.geometries[i].id);
+        labels[map.worldTopo.objects.world.geometries[i].id] = ' ';
+    }
     console.log(countries_by_iso.max_games_played);
     paletteScale = d3.scale.linear()
             .domain([0, countries_by_iso.max_games_played])
-            .range(["#EFEFFF","#02386F"]); // blue color
-    var labels = {};
+            .range(["#EFEFFF","#AE38EE"]); // blue color
 
     for (var i = 0; i < countries.length; i++) {
 
         var value = countries_by_iso[countries[i]].numberOfThings;
-        console.log(value  + " is color " + paletteScale(value));
+//        console.log(value  + " is color " + paletteScale(value));
         labels[countries[i]] = value;
         countries_by_iso[countries[i]].fillColor =  paletteScale(value);
     } 
+    console.log(labels);
     map.labels({'customLabelText': labels});
     map.updateChoropleth(countries_by_iso);
 
